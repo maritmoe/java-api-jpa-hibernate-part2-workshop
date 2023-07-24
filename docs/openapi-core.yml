@@ -1,52 +1,80 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
-  title: Java API Exercise - Core Criteria
-  description: |-
-  version: 0.2.2
+  title: Java API, JPA and Hibernate Part 2 Workshop - Core Criteria
+  description: Core Criteria for Java API, JPA and Hibernate Part 2 Workshop
+  version: 0.2.3
+  contact:
+    name: JPA and Hibernate Part 2 Workshop
 
 servers:
   - url: http://localhost:4000
 tags:
-  - name: examples
+  - name: employees
+  - name: departments
 paths:
-  /examples:
+  /employees:
     post:
       tags:
-        - examples
-      summary: Example POST route
-      description: Description of an example POST route
+        - employees
+      summary: Create a new employee
+      description: Create a new employee
+      operationId: createEmployee
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateExample'
+              $ref: '#/components/schemas/CreateEmployee'
       responses:
-        201:
+        '201':
+          description: Successfully created a new employee
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/Employee'
     get:
       tags:
-        - examples
-      summary: Example GET route
-      description: Description of an example GET route
+        - employees
+      summary: Get Employees
+      description: Get all employees
+      operationId: getEmployees
       responses:
-        200:
+        '200':
+          description: Successfully return a list of all employees
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllExamples'
-  /examples/{id}:
-    put:
+                $ref: '#/components/schemas/AllEmployees'
+  /employees/{id}:
+    get:
       tags:
-        - examples
-      summary: Example PUT route
-      description: Description of an example PUT route
+        - employees
+      summary: Get an employee
+      description: Get a single employee by their id
+      operationId: getSpecificEmployee
       parameters:
         - name: id
           in: path
-          description: The ID of the example to update
+          description: The ID of the employee to retrieve
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get the specified employee from the list given their ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+    put:
+      tags:
+        - employees
+      summary: Update Employee
+      description: Update the employee specified by the ID
+      operationId: updateEmployee
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the employee to update
           required: true
           schema:
             type: integer
@@ -54,63 +82,189 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateExample'
+              $ref: '#/components/schemas/CreateEmployee'
       responses:
-        201:
+        '201':
+          description: Successfully update the specified employee
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/Employee'
     delete:
       tags:
-        - examples
-      summary: Example DELETE route
-      description: Description of an example DELETE route
+        - employees
+      summary: Delete Employee
+      description: Delete the specified employee
+      operationId: deleteEmployee
       parameters:
         - name: id
           in: path
-          description: The ID of the example to delete
+          description: The ID of the employee to delete
           required: true
           schema:
             type: integer
       responses:
-        200:
+        '200':
+          description: Successfully deleted the specified employee
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
-
+                $ref: '#/components/schemas/Employee'
+  /departments:
+    post:
+      tags:
+        - departments
+      summary: Create a department
+      description: Create a new department
+      operationId: createDepartment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDepartment'
+      responses:
+        '201':
+          description: Successfully created a new department
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+    get:
+      tags:
+        - departments
+      summary: Get Department
+      description: Get all departments
+      operationId: getDepartments
+      responses:
+        '200':
+          description: Successfully return a list of all departments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllDepartments'
+  /departments/{id}:
+    get:
+      tags:
+        - departments
+      summary: Get a department
+      description: Get a single department by their id
+      operationId: getSpecificDepartment
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the department to retrieve
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get the specified department from the list given their ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+    put:
+      tags:
+        - departments
+      summary: Update Department
+      description: Update the department specified by the ID
+      operationId: updateDepartment
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the department to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDepartment'
+      responses:
+        '201':
+          description: Successfully update the specified department
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+    delete:
+      tags:
+        - departments
+      summary: Delete Department
+      description: Delete the specified department
+      operationId: deleteDepartment
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the department to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted the specified department
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
 components:
   schemas:
-    CreateExample:
+    CreateEmployee:
       type: object
-      required: [propertyOne, propertyTwo]
+      required: [first_name, last_name, department_id]
       properties:
-        propertyOne:
+        first_name:
           type: string
-          example: "Example Value"
-        propertyTwo:
-          type: email
-          format: email
-          example: "example@email.value"
-    Example:
+          example: "Ada"
+        last_name:
+          type: string
+          example: "Lovelace"
+        department_id:
+          type: integer
+          example: 1
+    Employee:
       type: object
       properties:
         id:
           type: integer
           example: 1
-        propertyOne:
+        first_name:
           type: string
-          example: "Example Value"
-        propertyTwo:
+          example: "Ada"
+        last_name:
           type: string
-          example: "example@email.value"
-        createdAt:
-          type: string
-          format: DateTime
-          pattern: YYYY-MM-DDTHH:MM:SS
-          example: 2023-03-14T11:01:56.633+00:00
-    AllExamples:
+          example: "lovelace"
+        department_id:
+          type: integer
+          example: 1
+    AllEmployees:
       type: array
       items:
-        $ref: '#/components/schemas/Example'
+        $ref: '#/components/schemas/Employee'
+    CreateDepartment:
+      type: object
+      required: [name, location]
+      properties:
+        name:
+          type: string
+          example: "Accounts"
+        location:
+          type: string
+          example: "Amsterdam"
+    Department:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Accounts"
+        location:
+          type: string
+          example: "Amsterdam"
+    AllDepartments:
+      type: array
+      items:
+        $ref: '#/components/schemas/Department'
