@@ -269,7 +269,7 @@ b) the best solution to this (if one exists)
 
 ## Exercise 2
 
-Implement the rest of the endpoints we normally build for our Employees/Departments classes.
+Implement the rest of the endpoints we normally build for our Employees/Departments classes. The spec can be found [here](https://boolean-uk.github.io/java-api-jpa-hibernate-part2-workshop/).
 
 
 
